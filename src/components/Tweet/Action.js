@@ -1,18 +1,28 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import UnstyledButton from '../UnstyledButton';
+import UnstyledButton from "../UnstyledButton";
 
-const Action = ({ color, size, children, onClick }) => {
+const Action = ({
+  color,
+  size,
+  children,
+  onClick,
+  isRetweetedByCurrentUser,
+  isLikedByCurrentUser
+}) => {
   const [isHovered, setIsHovered] = React.useState(false);
-
   return (
     <Wrapper
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       circleColor={color}
-      style={{ width: size, height: size, color: isHovered ? color : null }}
+      style={{
+        width: size,
+        height: size,
+        color: isHovered ? color : isRetweetedByCurrentUser ? color : null
+      }}
     >
       {children}
     </Wrapper>
@@ -27,7 +37,7 @@ const Wrapper = styled(UnstyledButton)`
   outline: none;
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;

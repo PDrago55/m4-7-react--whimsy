@@ -1,17 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
-import LikeButton from '../LikeButton';
+import LikeButton from "../LikeButton";
 
-import Action from './Action';
-import TweetActionIcon from './TweetActionIcon';
+import Action from "./Action";
+import TweetActionIcon from "./TweetActionIcon";
 
 const propTypes = {
   displayName: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   avatarSrc: PropTypes.string.isRequired,
   tweetContents: PropTypes.string.isRequired,
+  timestamp: PropTypes.string.isRequired,
+  numOfLikes: PropTypes.number.isRequired,
+  numOfRetweets: PropTypes.number.isRequired
 };
 
 const Tweet = ({
@@ -25,7 +28,7 @@ const Tweet = ({
   isLikedByCurrentUser,
   isRetweetedByCurrentUser,
   handleToggleLike,
-  handleToggleRetweet,
+  handleToggleRetweet
 }) => {
   return (
     <Wrapper>
@@ -38,16 +41,20 @@ const Tweet = ({
       </Header>
 
       <TweetContents>{tweetContents}</TweetContents>
-
+      <Timestamp>{timestamp}</Timestamp>
+      <Stats>
+        <strong>{numOfRetweets} </strong> Retweets <strong>{numOfLikes}</strong>{" "}
+        Likes
+      </Stats>
       <Divider />
 
       <Actions>
         <Action
           color="rgb(27, 149, 224)"
           size={40}
-          onClick={() => {
-            /* noop */
-          }}
+          // onClick={() => {
+          //   handleToggleLike();
+          // }}
         >
           <TweetActionIcon kind="reply" />
         </Action>
@@ -55,15 +62,23 @@ const Tweet = ({
         <Action
           color="rgb(23, 191, 99)"
           size={40}
-          onClick={handleToggleRetweet}
+          onClick={() => {
+            handleToggleRetweet();
+          }}
+          isRetweetedByCurrentUser={isRetweetedByCurrentUser}
         >
           <TweetActionIcon
             kind="retweet"
-            color={isRetweetedByCurrentUser ? 'rgb(23, 191, 99)' : undefined}
+            color={isRetweetedByCurrentUser ? "rgb(23, 191, 99)" : undefined}
           />
         </Action>
 
-        <Action color="rgb(224, 36, 94)" size={40} onClick={handleToggleLike}>
+        <Action
+          color="rgb(224, 36, 94)"
+          size={40}
+          onClick={handleToggleLike}
+          isLikedByCurrentUser={isLikedByCurrentUser}
+        >
           <LikeButton isLiked={isLikedByCurrentUser} />
         </Action>
 
@@ -89,8 +104,8 @@ const Wrapper = styled.div`
   padding: 16px;
   text-align: left;
   /* padding-bottom: 0; */
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Ubuntu, 'Helvetica Neue', sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Ubuntu, "Helvetica Neue", sans-serif;
 `;
 
 const Header = styled.header`
